@@ -13,7 +13,7 @@ const {
 } = require("../controllers/userController");
 const { validateToken, validateAdmin } = require("../middleware/authHandler");
 const { validate, userRegisterValidationRules, userLoginValidationRules } = require("../middleware/validateHandler");
-userRouter.route("/login").post(userLoginValidationRules(),validate,authUser);
+userRouter.route("/login").post(authUser);
 userRouter.route("/logout").post(logoutUser);
 userRouter
   .route("/")

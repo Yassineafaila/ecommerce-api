@@ -1,5 +1,6 @@
 const { body, validationResult } = require('express-validator')
 const userLoginValidationRules = () => {
+  console.log("im right now validtaing")
   return [
     
     //email must be full
@@ -7,7 +8,7 @@ const userLoginValidationRules = () => {
     // the email  must be an email
     body("email","it's not a valide email").isEmail(),
     // password must be at least 8 chars long
-    body('password',"password must be at least 8 characters").isLength({ min: 8 }),
+    body('password',"password must be at least 8 characters").isLength({ min: 6 }),
   ]
 }
 const userRegisterValidationRules=()=>{
@@ -26,6 +27,7 @@ const userRegisterValidationRules=()=>{
 const validate = (req, res, next) => {
   const errors = validationResult(req)
   console.log(errors)
+  console.log('error happened')
   if (errors.isEmpty()) {
     return next()
   }
