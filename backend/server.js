@@ -1,14 +1,20 @@
 const express = require("express");
 const dotenv = require("dotenv").config();
+const bodyParser=require("body-parser")
+const multer=require("multer")
+const upload=multer({dest:"uploads/"})
 const color = require("colors");
 const app = express();
 const errorHandling = require("./middleware/errorHandling");
 //connect to database:
 const connectDb = require("./config/dbConnection");
 connectDb();
-app.use(express.urlencoded({ extended: true }));
+//this middleware  fro parsing multipart/form-data
+app.use(bodyParser.urlencoded({limit:"90mb",extended:true}))
 app.use(express.json());
+
 //imports routes:
+
 const productRouter = require("./routes/productRoutes");
 const userRouter = require("./routes/userRoutes");
 const orderRouter=require("./routes/orderRoutes")
@@ -20,9 +26,8 @@ app.use("/api/v1/products", productRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/orders",orderRouter)
 
-//middlewares :
- 
 app.use(errorHandling);
+
 
 //listen on a port :
 app.listen(PORT, () => {

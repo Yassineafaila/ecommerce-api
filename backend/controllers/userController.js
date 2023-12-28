@@ -8,10 +8,8 @@ const { tokenGenerate } = require("../utils/utils");
 
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  console.log(email,password)
 
   const user = await userModel.findOne({ email });
-  console.log(user)
   if (user && (await user.matchPassword(password))) {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "30d",

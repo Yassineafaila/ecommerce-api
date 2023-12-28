@@ -1,19 +1,27 @@
 const multer = require("multer");
-const {GridFsStorage } = require("multer-gridfs-storage");
+const util = require("util");
+const { GridFsStorage } = require("multer-gridfs-storage");
 
 const storage = new GridFsStorage({
-  url:process.env.MONGO_CLIENT_CONNECTION,
+  url: process.env.MONGO_CLIENT_CONNECTION,
   options: { useNewUrlParser: true, useUnifiedTopology: true },
   file: (req, file) => {
-    if (file.mimetype == "image/jpeg" || file.mimetype == "image/png") {
+    const defaultFilename = `${Date.now()}_${file.originalname}`;
+    console.log(file)
+    if (file && (file.mimetype === "image/jpeg" || file.mimetype === "image/png")) {
       return {
         bucketName: "photos",
-        filename: `${Date.now()}_${file.originalname}`,
+        filename: defaultFilename,
       };
     } else {
-      return `${Date.now()}_${file.originalname}`;
+      return {
+        filename: defaultFilename,
+      };
     }
   },
 });
 
-module.exports=multer({storage})
+const uploadFiles = multer({ storage: storage }).single("image");
+const uploadFilesMiddleware = util.promisify(uploadFiles);
+
+module.exports = uploadFilesMiddleware;

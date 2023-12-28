@@ -42,9 +42,12 @@ const getProductById = asyncHandler(async (req, res) => {
 //@access private/admin
 
 const createProduct = asyncHandler(async (req, res) => {
+   console.log(req.file)
+   console.log(req.body)
+   const {filename:imageFilename}=req.file
+   console.log(imageFilename)
   const {
-    name,
-    image,
+    name,    
     description,
     brand,
     category,
@@ -53,10 +56,11 @@ const createProduct = asyncHandler(async (req, res) => {
     rating,
     numReviews,
   } = req.body;
+  
   const newProduct = new productModel({
     admin: req.user._id,
     name,
-    image,
+    image:imageFilename,
     description,
     brand,
     category,
@@ -64,7 +68,9 @@ const createProduct = asyncHandler(async (req, res) => {
     countInStock,
     rating,
     numReviews,
-  });
+  })
+  
+
   const createProduct = await newProduct.save();
   res.status(201).json(createProduct);
 });
