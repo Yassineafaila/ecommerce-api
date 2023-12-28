@@ -24,6 +24,7 @@ const userRegisterValidationRules=()=>{
     ]
 }
 
+
 const validate = (req, res, next) => {
   const errors = validationResult(req)
   console.log(errors)

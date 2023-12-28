@@ -7,7 +7,7 @@ const storage = new GridFsStorage({
   options: { useNewUrlParser: true, useUnifiedTopology: true },
   file: (req, file) => {
     const defaultFilename = `${Date.now()}_${file.originalname}`;
-    console.log(file)
+    
     if (file && (file.mimetype === "image/jpeg" || file.mimetype === "image/png")) {
       return {
         bucketName: "photos",
