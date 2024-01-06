@@ -10,12 +10,12 @@ const {
 } = require("../controllers/productController");
 const { validateToken, validateAdmin } = require("../middleware/authHandler");
 const uploadFilesMiddleware = require("../middleware/uploadImagesHandler");
-const { validateProductDetails, validate } = require("../middleware/validateHandler");
+const { validate, validateFile } = require("../middleware/validateHandler");
 const productRouter = express.Router();
 productRouter
   .route("/")
   .get(getProducts)
-    .post(validateToken, validateAdmin,validateProductDetails(),validate,uploadFilesMiddleware,createProduct);
+    .post(validateToken, validateAdmin,uploadFilesMiddleware,validateFile,createProduct);
 productRouter.route("/my-products").get(validateToken,validateAdmin,getAllProducts)
 productRouter
   .route("/:id")
@@ -24,3 +24,4 @@ productRouter
   .delete(validateToken, validateAdmin, deleteProduct);
 
 module.exports = productRouter;
+

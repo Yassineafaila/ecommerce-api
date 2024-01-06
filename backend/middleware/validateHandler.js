@@ -26,12 +26,19 @@ const userRegisterValidationRules = () => {
     }),
   ];
 };
-const validateProductDetails = () => {
-  return [
-    // image must not be empty
-    check("image").notEmpty().withMessage("You must select an image"),
-  ];
-};
+
+// validate file input
+const validateFile=(req,res,next)=>{
+  const exceptedFileType=['png','jpg','jpeg']
+  if(!req.file){
+    return res.json({success:false,message:"Image is required !"})
+  }
+  const fileExtension=req.file.mimetype.split("/").pop();
+  if(!exceptedFileType.includes(fileExtension)){
+    return res.json({success:false,message:"Image file  is not invalid !"})
+  }
+  return next()
+}
 
 const validate = (req, res, next) => {
   const errors = validationResult(req);
@@ -51,6 +58,6 @@ const validate = (req, res, next) => {
 module.exports = {
   userLoginValidationRules,
   userRegisterValidationRules,
-  validateProductDetails,
+  validateFile,
   validate,
 };
